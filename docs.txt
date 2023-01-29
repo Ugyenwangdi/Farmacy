@@ -1,0 +1,176 @@
+$ npx create-react-app frontend
+$ cd frontend
+$ npm start 
+
+
+Single page application  : only single page is rendered and whenever we click on a link or components, that page or component is loaded into the div of root page and looks like a new page 
+
+but our page will never actually refresh 
+
+Farmacy
+MyHarvest
+
+Farmly
+
+
+https://react-bootstrap.github.io/
+
+https://bootswatch.com/
+
+$ npm install react-bootstrap
+npm install react-bootstrap@1.4.0",
+npm install react-bootstrap@2.4.0 --save
+
+$ npm install react-router-dom react-router-bootstrap
+
+frontend/Backend workflow 
+
+- Fontend (React + Redux ) : PORT: http://127.0.0.1:3000
+
+- Backend ( Django + DRF) : PORT: http://127.0.0.1:8000
+
+When we want to produce react project in production, we do run build to convert it into static files so that we can use those inside django project to serve as static files 
+And thats why project need not have to be in different server 
+
+
+$ pip install virtualenv 
+$ myenv\scripts\activate
+$ pip install django
+$ django-admin startproject backend 
+$ cd backend 
+$ python manage.py runserver
+$ python manage.py startapp base
+$ pip install djangorestframework
+$ python manage.py migrate
+
+
+$ cd frontend 
+$ npm install axios                                                        
+
+$ python manage.py createsuperuser
+
+$ pip install pillow 
+
+Redux helps us to see entire state of our application 
+https://redux.js.org/understanding/thinking-in-redux/glossary
+
+$ npm install redux react-redux redux-thunk redux-devtools-extension
+
+$ pip install djangorestframework-simplejwt
+
+
+
+- declare constants 
+- reducers 
+- register with store 
+- Create user actions 
+- To use it, create a screen and dispatch the actions inside the screen 
+- Register the screen inside App.js 
+
+- screen , register screen in app.js 
+
+- https://developer.paypal.com/home
+- developer.paypal.com : wulfidragon inside the sandbox and later on create to real account 
+- create two types of account: business(where money deposits) and customer account(who pays)
+- Create app, get client id 16:49
+
+
+https://sandbox.paypal.com/home: login using business acc. farmacy@email.com to check the payments 
+
+when we want to pay we can use personal account: ugyen@email.com, 
+
+$ npm install react-paypal-button-v2 --force
+
+
+$ python manage.py makemigrations
+It is impossible to add the field 'createdAt' with 'auto_now_add=True' to review without providing a default. This is because the database needs something to populate existing rows.
+ 1) Provide a one-off default now which will be set on all existing rows
+ 2) Quit and manually define a default value in models.py.
+Select an option: 1
+Please enter the default value as valid Python.
+Accept the default 'timezone.now' by pressing 'Enter' or provide another value.
+The datetime and django.utils.timezone modules are available, so it is possible to provide e.g. timezone.now as a value.
+Type 'exit' to exit this prompt
+[default: timezone.now] >>> timezone.now
+Migrations for 'base':
+  base\migrations\0005_review_createdat.py
+    - Add field createdAt to review
+
+$ python manage.py migrate
+
+
+
+Merging react files into django : build into static assets inside the frontend folder 
+$ npm run build 
+
+Now all the react frontend files are are inside single file, index.html: single page application of react 
+
+
+Point django to this file: index.html
+
+In settings.py:
+
+'''
+
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [
+            os.path.join(BASE_DIR, 'frontend/build')
+        ],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
+    },
+]
+
+''''
+
+
+Inside urls:
+
+'''
+from django.contrib import admin
+from django.urls import path, include
+
+from django.conf import settings
+from django.conf.urls.static import static
+from django.views.generic import TemplateView
+
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path('', TemplateView.as_view(template_name='index.html')),
+    path('api/products/', include('base.urls.product_urls')),
+    path('api/users/', include('base.urls.user_urls')),
+    path('api/orders/', include('base.urls.order_urls')),
+
+]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+'''
+
+In settings for static files : 
+''
+
+
+STATICFILES_DIRS = [ 
+    BASE_DIR / "static",
+    BASE_DIR / 'frontend/build/static'
+]
+
+
+'''
+
+To update, runt inside frontend using npm start and run build
+
+
+
+- Use hash router : so that we don't face issues when we hard refresh page
