@@ -3,8 +3,7 @@
 Live Demo can be viewed at https://farmacy.onrender.com/
 
 
-![DEMO](../backend/static/images/demo.png)
-
+<img src="Farmacy.png"> 
 
 # Features
 * Full featured shopping cart
